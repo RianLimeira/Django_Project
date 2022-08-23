@@ -93,12 +93,15 @@ def lista_eventos(request):
 
 @login_required(login_url='/login/')
 def evento(request):
-    id_evento = request.GET.get('id')
+    usuario = request.user
+    try:
+        id_evento = request.GET.get('id')
+    except Exception:
+        raise Http404()
     dados = {}
     if id_evento:
         dados['evento'] = Evento.objects.get(id=id_evento)
-    else:
-        raise Http404()
+
     return render(request, 'evento.html', dados)
 
 
